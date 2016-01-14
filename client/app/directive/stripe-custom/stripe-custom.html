@@ -1,0 +1,53 @@
+<!-- custom form -->
+<div class='col-lg-12 col-md-12 staticCust'>
+       <form stripe:form="saveCustomer" class="stripe-button">
+            <div class='form-row'>
+              <div class='col-xs-12 form-group required_checkout'>
+                <label class='control-label'>Name on Card</label>
+                <input class='form-control' size='4' ng-model="formData.name" type='text'>
+              </div>
+              <div class='col-xs-12 form-group required_checkout'>
+                <label class='control-label'>Email</label>
+                <input class='form-control' size='4' ng-model="formData.email" type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-xs-12 form-group card required_checkout'>
+                <label class='control-label'>Card Number</label>
+                <input data-stripe="number" autocomplete='off' class='form-control card-number' ng-model="formData.cc" size='20' type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-xs-12 form-group cvc required_checkout'>
+                <label class='control-label'>CVC</label>
+                <input data-stripe="cvc" autocomplete='off' class='form-control card-cvc' ng-model="formData.cvc" placeholder='ex. 311' size='4' type='text'>
+              </div>
+              <div class='col-xs-12 form-group expiration required_checkout'>
+                <label class='control-label'>Expiration</label>
+                <input data-stripe="exp-month" class='form-control card-expiry-month' ng-model="formData.expMonth" placeholder='MM'  type='text'>
+                <label class='control-label'> </label>
+                <input data-stripe="exp-year" class='form-control card-expiry-year' ng-model="formData.expYear" placeholder='YYYY' type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-12'>
+                <!-- <div class='form-control total btn btn-info'> -->
+                  <!-- Total:{{formData.amount}} -->
+                    <input class='form-control card-expiry-year' ng-model="formData.amount" size='4' type='text'>
+                <!-- </div> -->
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-sm-4 form-group'>
+                <button class='form-control btn btn-primary submit-button' type='submit'>Pay »</button>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-12 error form-group hide'>
+                <div class='alert-danger alert'>
+                  Please correct the errors and try again.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>

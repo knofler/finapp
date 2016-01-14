@@ -1,0 +1,36 @@
+<input ng-hide="totalList" ng-model="search" 
+           type="search" 
+           class="es" id="set_enter"
+           placeholder="Search records..." 
+           autofocus>
+<button ng-click="elasticSearch()" class="btn btn-info esb" popover="elastic search!" popover-trigger="mouseenter">Search</button>
+
+<!-- Display elastic search stats here -->
+<div class="es_stats">
+  <ul>
+    <li class="es_li"><span class="es_span">Shards :: </span>{{elastic_shards}}</li>
+  </ul>
+  <ul>
+    <li class="es_li"><span class="es_span">Record Found : </span>{{elastic_stats.hits.total}}</li>
+    <li class="es_li"><span class="es_span">Max Score : </span>{{elastic_stats.hits.max_score}}</li>
+    <li class="es_li"><span class="es_span">Time took : </span>{{elastic_stats.took}} Milliseconds</li>
+  </ul>  
+</div>
+
+<!-- This is the iteration of content from database to display here -->
+  <section id="pinBoot">  
+    <article class="white-panel" ng-repeat="(key,value) in filtered =(payload | advancefilter:search) | orderBy:'-created_at' ">
+      <img src={{value._source.img}} alt="">
+      <h4><a href="#">{{value._source[source.fields[1].name] | capitalize}}</a>
+        <span class="green_span">{{value._source[source.fields[3].name] | currency}}</span>
+      </h4>
+      <h6><strong><a href="#">{{value._source.created_by}}</a></strong>
+          <span class="created_at">| {{value._source.created_at | date: 'longDate'}}</span>
+      </h6>
+       <hr class="display_hr">
+      <p>{{value._source[source.fields[2].name]}}</p>
+         <span class="brown_span">{{value._source[source.fields[4].name] | capitalize}}</span>
+      <hr class="display_hr">
+      <display-control data='source' item="value._source"></display-control>
+    </article>
+  </section>     

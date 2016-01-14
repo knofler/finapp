@@ -1,0 +1,100 @@
+Application Name,Version,Dependency,App Usage,MSI,MST,Config Files,Setup.exe,license server,License type,Lic count,Number of staff ,Application Type,Phase,Hardcoded License issue,Sequencing Done,Tech,AKS and other Documentation,Tech,Publishing Done,Tech,Published on Citrix Storefront,Tech,Testing Done,Tech,Directly on Server,Comments
+@RISK,6.2,Excel preinstalled,FBE,no,no,no,yes,yes,INDIVIDUAL,1,0,add-in,1,no,,,,,,,,,,,,
+Acrobat Reader,11.0.10,None,FBE,yes,yes,no,no,no,Freeware,NA,NA,application,1,no,yes,AB,yes,AB,yes,AB,yes,RA,yes,AB,no,
+Adobe Acrobat Pro,10,None,FBE,yes,yes,no,no,no,Faculty concurrent,60,200,application,1,no,,,,,,,,,,,,Are we moving to Acrobat Pro XI or DC??
+Adobe Creative Cloud,1,None,FBE,yes,no,yes,yes,no,Faculty individual,10,10,application,1,no,,AB,,,,,,,,,,"6 Windows users 4 MAC users (DL to investigate, if packages can be broken down into indivdual apps)"
+Adobe Flash,latest,None,UNI,no,no,no,yes,no,Freeware,NA,Unknown,middleware,1,no,,,,,,,,,,,,
+Articulate Storyline,2,.Net framework 4.0,FBE,no,no,no,yes,no,Faculty individual,1,1,application,1,yes,,,,,,,,,,,,"we own 1 licence, cannot register a second instance in sequencing"
+Camtasia,8.3,"Flash Player, MS Office, .Net Framework 4",FBE,yes,yes,no,no,no,Faculty concurrent,50,6,application,1,no,,FG,,,,,,,,,,
+Datastream,5.1,,FBE,yes,no,no,no,no,Faculty Site,NA,Unknown,application,1,no,,,,,,,,,,,,
+EcStat,latest,Microsoft Office,FBE,no,no,no,yes,no,Freeware,NA,Unknown,add-in,1,To be investigated,,,,,,,,,,,,Office add-in
+EndNote,X7.0.2,MS Office,UNI,yes,no,no,no,yes,Uni Site,NA,Unknown,application add-in,1,no,,,,,,,,,,,,Consider X7.3
+Eviews,9,Visual C++ 2010Visual,FBE,yes,no,yes,no,yes,concurrent,200,21,application,1,no,yes,FG,yes,AB,yes,FG,yes,AW,yes,FG,no,AKS uploaded by Andy on Fab's behalf
+Gretl,1.9.5,None,FBE,yes,no,no,no,no,Freeware,NA,Unknown,application,1,yes,,,,,,,,,,,,Issue log - cannot write to folder structure - investigating
+Java,latest,None,UNI,no,no,no,yes,no,Freeware,NA,Unknown,middleware,1,no,,,,,,,,,,,,
+Leximancer,4,Java specific version (6u39/6u41),FBE,no,no,yes,yes,no,Faculty Site,NA,Unknown,application,1,no,,,,,,,,,,,,Client User permission issue encountered. Added to Application Issue Log
+MathType,6.9,MS Office,FBE,yes,no,no,no,no,Faculty site,NA,Unknown,application add-in,1,no,,,,,,,,,,,,
+MATLAB,2015B,VC++ 2005,UNI,no,no,yes,yes,yes,Uni Site,NA,Unknown,application,1,no,,,,,,,,,,,,
+Microsoft Office,2013,None,UNI,no,no,no,yes,yes,Uni Site,NA,Unknown,application,1,no,,,,,,,,,,,,To be investigated by David Ly
+Minitab,17,None,UNI,no,no,yes,yes,yes,Uni Site,NA,Unknown,application,1,no,yes,AB,yes,AB,yes,AB,yes,RA,yes,AB,no,
+MS Project,2013,MS Office,FBE,no,no,no,yes,no,Faculty individual,30,15,application,1,no,,,,,,,,,,,,
+MS Visio,2013,MS Office,FBE,no,no,no,yes,no,Faculty individual,30,5,application,1,no,,,,,,,,,,,,32 users on 2010 version
+Music2Go,6.67,None,FBE,yes,yes,no,no,no,Freeware,NA,Unknown,application,1,To be investigated,,AB,,,,,,,,,,
+MYOB,19.10,None,FBE,yes,yes,yes,no,no,Faculty Site,NA,Unknown,application,1,no,,FG,,,,,,,,,,
+MYOB,19.9,None,FBE,yes,yes,yes,no,no,Faculty Site,NA,Unknown,application,1,no,,FG,,,,,,,,,,
+Nvivo,10,SQL 2008 R2,UNI,yes,yes,yes,yes,no,Uni Site,NA,Unknown,application,1,no,,FG,,,,,,,,,,
+Perfect IT,2.2,MS Office,FBE,yes,no,no,no,no,Faculty individual,200,22,add-in,1,no,,,,,,,,,,,,
+R for Windows,3.0.3,None,FBE,yes,no,no,no,no,Freeware,NA,Unknown,application,1,no,,,,,,,,,,,,Issue log - cannot write to folder structure when installing new packages - investigating
+RStudio,0.98,ÿR for Windows,FBE,yes,no,no,no,no,Freeware,NA,Unknown,application,1,no,,,,,,,,,,,,Issue log - cannot write to folder structure when installing new packages - investigating
+S Plus TIBCO Spotfire,8.2,None,FBE,yes,no,no,no,no,Uni Site,NA,Unknown,application,1,To be investigated,,,,,,,,,,,,
+SAP,7.20,None,FBE,yes,no,yes,no,no,Freeware,NA,Unknown,application,1,no,,,,,,,,,,,,
+SAS,9.3,"1. Microsoft.NET Framework 4.0
+2. MS Runtime Components 7.1
+3. MS Runtime Components 8.0 SP1
+4. MS Runtime Components 9.0 SP1 
+5. MS Runtime Component 10
+6. MS Office Access database Engine 2010
+7. Java Runtime Environment",FBE,no,no,yes,yes,no,Uni SITE,NA,Unknown,application,1,no,,,,,,,,,,,,
+Scientific Workplace,5.5,None,FBE,yes,no,yes,no,no,Faculty individual,8,7,application,1,yes,,,,,,,,,,,,
+SHAZAM P,11.0.5,None,FBE,yes,yes,yes,no,no,Faculty Site,NA,Unknown,application,1,no,,FG,,,,,,,,,,
+Shockwave,latest,None,UNI,no,no,no,yes,no,Freeware,NA,Unknown,middleware,1,no,,,,,,,,,,,,
+Smart PLS,3.0,None,FBE,yes,no,yes,no,yes,Faculty individual,7,7,application,1,no,,,,,,,,,,,,Issue log - cannot write to folder structure when launching  - investigating
+SPSS AMOS,22,None,UNI,yes,yes,no,no,no,Uni Site,NA,Unknown,application,1,no,,,,,,,,,,,,Issue log - Cannot be virtualised with APPv ( https://www-304.ibm.com/support/docview.wss?uid=swg21512240)
+SPSS Modeler,14.2,None,UNI,no,no,no,no,no,Uni Site,NA,Unknown,application,1,no,,,,,,,,,,,,Issue log - Cannot be virtualised with APPv ( https://www-304.ibm.com/support/docview.wss?uid=swg21512240)
+SPSS Statistics,22,None,UNI,yes,yes,yes,no,no,Uni Site,NA,Unknown,application,1,no,,,,,,,,,,,,Issue log - Cannot be virtualised with APPv ( https://www-304.ibm.com/support/docview.wss?uid=swg21512240)
+Stata ,14,None,FBE,yes,no,no,no,no,Faculty individual,43,43,application,1,no,yes,AB,yes,AB,yes,AB,yes,AW,yes,AB,no,
+WinEdit,6,None,FBE,yes,no,no,no,no,Faculty individual,200,20,application add-in,1,no,yes,FG,yes,AB,yes,FG,yes,RA,yes,FG,no,"Application working fine, AKS uploaded by Andy on Fab's behalf"
+WinRATS Standard,9,None,FBE,yes,no,yes,no,no,Faculty Site,NA,Unknown,application,1,no,yes,AB,yes,AB,yes,AB,Yes,RA,yes,AB,no,Testing done; AKS done
+XLSTAT,2015,Microsoft Office,FBE,yes,no,no,no,no,Faculty Site,NA,Unknown,add-in,1,yes,,,,,,,,,,,,
+Adobe Indesign,CS6,None,FBE,,,,,,INDIVIDUAL,11,5,application,2,no,,,,,,,,,,,,
+Adobe Indesign,CS5,None,FBE,,,,,,INDIVIDUAL,6,4,application,2,no,,,,,,,,,,,,
+Adobe Photoshop ,CS6,None,FBE,,,,,,INDIVIDUAL,0,0,application,2,no,,,,,,,,,,,,
+Adobe Photoshop ,CS5,None,FBE,,,,,,INDIVIDUAL,9,7,application,2,no,,,,,,,,,,,,
+DIVER,1,None,UNI,no,no,yes,no,no,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Dragon Natural Speaking,12,None,FBE,no,no,no,yes,no,INDIVIDUAL,1,0,application,2,no,,,,,,,,,,,,
+Foresight,1,None,FBE,no,no,yes,no,no,UNI SITE,0,0,application,2,To be investigated,,,,,,,,,,,,
+FreeMind,0.8.1,Java,FBE,no,no,no,yes,no,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+GAMS,1,None,FBE,,,,,,INDIVIDUAL,1,1,application,2,To be investigated,,,,,,,,,,,,
+GAUSS,14,None,FBE,yes,no,no,no,yes,INDIVIDUAL,3,3,application,2,no,,,,,,,,,,,,
+Ghost Script,9.05,None,FBE,no,no,no,yes,no,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Grammarly,2.4,Microsoft Office,FBE,no,no,no,yes,no,FBE SITE,200,1,add-in,2,no,,,,,,,,,,,,
+Grind EQ,2015,None,FBE,no,no,no,yes,no,INDIVIDUAL,1,0,application,2,yes,,,,,,,,,,,,
+GS view,5,None,FBE,no,no,no,yes,no,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Itunes,10.4.1,None,FBE,,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+JmulTi,4.24,None,FBE,no,no,no,yes,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Klim Type Foundry Font - National,1,None,FBE,,,,,,INDIVIDUAL,8,6,Fonts,2,NA,,,,,,,,,,,,
+Klim Type Foundry Font - Newzald,1,None,FBE,,,,,,INDIVIDUAL,8,6,Fonts,2,NA,,,,,,,,,,,,
+LatentGold,4.5,None,FBE,,,,,,INDIVIDUAL,1,0,application,2,no,,,,,,,,,,,,
+Latex,1,None,FBE,,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Limdep,10,None,FBE,no,no,no,yes,no,INDIVIDUAL,5,1,application,2,no,,,,,,,,,,,,
+Lisrel,8.8,None,FBE,,,,,,INDIVIDUAL,1,0,application,2,To be investigated,,,,,,,,,,,,
+Maple,2015,None,FBE,,,,,,CONCURRENT,3,1,application,2,no,,,,,,,,,,,,
+Mathematica,8.0.1,,FBE,no,no,no,yes,no,INDIVIDUAL,1,0,application,2,yes,,,,,,,,,,,,
+Microfit,5,Packageing not Required;Run off the network,FBE,yes,no,no,no,yes,INDIVIDUAL,5,3,application,2,no,,,,,,,,,,,,
+MikTex,2.9,None,FBE,no,no,no,yes,no,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Morae,3.2,web,FBE,no,no,no,yes,no,INDIVIDUAL,1,0,application,2,To be investigated,,,,,,,,,,,,
+MPlus,7.31,None,FBE,,,,,,INDIVIDUAL,1,0,application,2,To be investigated,,,,,,,,,,,,
+Net Logo,5.0.3,,FBE,,,,,,FREEWARE,0,0,application,2,To be investigated,,,,,,,,,,,,
+Oxmetrics,7,None,FBE,,,,,,INDIVIDUAL,2,2,application,2,yes,,,,,,,,,,,,
+PCTeX,6,,FBE,,,,,,INDIVIDUAL,2,1,application,2,no,,,,,,,,,,,,
+PDF Annotator,3,Acrobat reader,FBE,,,,,,INDIVIDUAL,4,3,application,2,no,,,,,,,,,,,,
+QMWin32,1,None,FBE,,,,,,FBE SITE,0,0,application,2,To be investigated,,,,,,,,,,,,
+Quickbooks,19,None,FBE,,,,,,FBE SITE,0,0,application,2,no,,,,,,,,,,,,
+Quicktime,7.6.9,None,UNI,,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+ReadAbility Formulas,7.4,None,FBE,,,,,,INDIVIDUAL,1,1,application,2,To be investigated,,,,,,,,,,,,
+RealPlayer,14.0.7.669,None,UNI,,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+SawTooth,7,,FBE,,,,,,FBE SITE,0,0,application,2,no,,,,,,,,,,,,
+Scientific Notebook,3.5,None,FBE,,,,,,FBE CONCURRENT,41,0,application,2,yes,,,,,,,,,,,,
+Scientific Word,5.5,,FBE,,,,,,INDIVIDUAL,5,2,application,2,yes,,,,,,,,,,,,
+Scilab,5.4,None,UNI (STUDENT),,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Snagit,10.0.1.0,None,FBE,,,,,,INDIVIDUAL,15,2,application,2,no,,,,,,,,,,,,
+Stat Transfer,13,None,FBE,,,,,,FBE SITE,25,1,application,2,no,,,,,,,,,,,,
+STELLA,10,None,FBE,,,,,,INDIVIDUAL,1,1,application,2,To be investigated,,,,,,,,,,,,
+Tableau Desktop Professional,9,None,FBE,,,,,,INDIVIDUAL,2,2,application,2,NA,,,,,,,,,,,,
+Telestream Screenflow software,5,MAC Platform,FBE,,,,,,INDIVIDUAL,1,1,application,2,To be investigated,,,,,,,,,,,,
+TexFonts25,1,Firefox,UNI (STUDENT),,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Texnic Center,2.1,MikTeX,UNI (STUDENT),,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+TeXStudio,2.5.2,None,UNI (STUDENT),,,,,,FREEWARE,0,0,application,2,no,,,,,,,,,,,,
+Timetrade,1,Web App,UNI,,,,,,0,0,0,application,2,To be investigated,,,,,,,,,,,,
+TreeAge Pro Healthcare,R1.2,None,FBE,,,,,,INDIVIDUAL,10,2,application,2,no,,,,,,,,,,,,
+Vensim,5.9E,None,FBE,,,,,,INDIVIDUAL,1,0,application,2,To be investigated,,,,,,,,,,,,

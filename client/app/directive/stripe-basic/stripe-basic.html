@@ -1,0 +1,15 @@
+<!-- Default stripe form -->
+<div class="stripeBtn">
+ <form action="/charge" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_mp6CNGQG20olcy2ELIupR4Q7"
+      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      data-name="Aircanteen"
+      data-description="{{userName}}"
+      data-currency="aud"
+      data-amount="{{total}}"
+      data-locale="auto">
+    </script>
+  </form>
+ </div> 

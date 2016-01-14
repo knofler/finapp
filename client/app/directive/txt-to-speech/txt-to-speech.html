@@ -1,0 +1,59 @@
+  	<div class="col-lg-12 col-md-12 col-sm-12">
+  	<h2 class="h2_custom">Speak it out</h2>
+  	<form id="speakData" onsubmit="meSpeak.speak(text.value, { amplitude: amplitude.value, wordgap: wordgap.value, pitch: pitch.value, speed: speed.value }); return false">
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon">Text</span>
+	  <input type="text" name="text" class="form-control inputCtrl" size=50 value="Type here, what you want to listen ...">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon">Amplitude</span>
+	  <input type="text" name="amplitude" class="form-control" size=5 value="100">
+	  <span class="input-group-addon">Pitch</span>
+	  <input type="text" name="pitch" class="form-control" size=5 value="50">
+	  </div>
+	  <div class="input-group input-group-lg">
+	  <span class="input-group-addon">Speed</span>
+	  <input type="text" name="speed" class="form-control" size=5 value="175">
+	  <span class="input-group-addon">Word Gap</span>
+	  <input type="text" name="wordgap" class="form-control" size=5 value="0">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon">Voice</span>
+    <select class="btn btn-default dropdown-toggle btn-height" data-toggle="dropdown" id="voiceSelect" 
+    onchange="loadVoice(this.options[this.selectedIndex].value)">
+    	<option value="ca">ca - Catalan</option>
+		<option value="cs">cs - Czech</option>
+		<option value="de">de - German</option>
+		<option value="el">el - Greek</option>
+		<option value="en/en" selected="selected">en - English</option>
+		<option value="en/en-n">en-n - English, regional</option>
+		<option value="en/en-rp">en-rp - English, regional</option>
+		<option value="en/en-sc">en-sc - English, Scottish</option>
+		<option value="en/en-us">en-us - English, US</option>
+		<option value="en/en-wm">en-wm - English, regional</option>
+		<option value="eo">eo - Esperanto</option>
+		<option value="es">es - Spanish</option>
+		<option value="es-la">es-la - Spanish, Latin America</option>
+		<option value="fi">fi - Finnish</option>
+		<option value="fr">fr - French</option>
+		<option value="hu">hu - Hungarian</option>
+		<option value="it">it - Italian</option>
+		<option value="kn">kn - Kannada</option>
+		<option value="la">la - Latin</option>
+		<option value="lv">lv - Latvian</option>
+		<option value="nl">nl - Dutch</option>
+		<option value="pl">pl - Polish</option>
+		<option value="pt">pt - Portuguese, Brazil</option>
+		<option value="pt-pt">pt-pt - Portuguese, European</option>
+		<option value="ro">ro - Romanian</option>
+		<option value="sk">sk - Slovak</option>
+		<option value="sv">sv - Swedish</option>
+		<option value="tr">tr - Turkish</option>
+		<option value="zh">zh - Mandarin Chinese (Pinyin)</option>
+		<option value="zh-yue">zh-yue - Cantonese Chinese</option>
+	</select>
+	<button class="btn btn-danger btn-adjust" type="submit">Go</button>
+	<button class="btn btn-warning btn-adjust" id="button" ng-click="speakIt()">speak multipart</button>
+	</div>
+  </form>
+  </div>

@@ -1,0 +1,93 @@
+<div class="col-lg-5 col-md-4 col-sm-4 phone">
+    <div class="row1">
+        <div class="col-lg-12">
+            
+            <button class="btn btn-warning" ng-click="sendSms()">SMS</button>
+            <button class="btn btn-info" ng-click="getResponse()">Get Response</button>
+            <input type="tel" name="name" ng-disabled="!callReady" id="telNumber" class="form-control tel" value="" />
+            
+            <div class="num-pad" ng-hide="!callReady">
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">1</div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">2 <span class="small"><p>ABC</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">3 <span class="small"><p>DEF</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">4 <span class="small"><p>GHI</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">5 <span class="small"><p>JKL</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">6 <span class="small"><p>MNO</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">7 <span class="small"><p>PQRS</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">8 <span class="small"><p>TUV</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">9 <span class="small"><p>WXYZ</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">*</div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">0 <span class="small"><p>+</p></span></div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="num">
+                        <div class="txt">#</div>
+                    </div>
+                </div>
+            </div>
+        <div class="clearfix"></div>
+        <a href="" ng-show="callReady" ng-click="makeCalls()" class="btn btn-success btn-block flatbtn">{{callBtn}}</a>
+        <a href="" ng-hide="callReady" ng-click="hangUp()" class="btn btn-warning btn-block flatbtn">{{callBtn}}</a>
+    </div>
+
+
+    <div class="spanicons">
+        <span class="glyphicon glyphicon-star"></span><span class="small"><p>Favorites</p></span>
+    </div>
+    <div class="spanicons">
+        <span class="glyphicon glyphicon-earphone"></span><span class="small"><p>Calls</p></span>
+    </div>
+    <div class="spanicons">
+        <span class="glyphicon glyphicon-user"></span><span class="small"><p>Contacts</p></span>
+    </div>
+    <div class="spanicons active">
+        <span class="glyphicon glyphicon-th"></span><span class="small"><p>Keyboard</p></span>
+    </div>
+    <div class="spanicons">
+       <i class="fa fa-microphone"></i><span class="small"><p>Voice mail</p></span>
+    </div>
+
+</div>

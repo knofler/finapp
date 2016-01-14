@@ -1,0 +1,40 @@
+.d3topDiv{
+	/*float: left;*/
+	/*clear: right;*/
+	display: inline-block;
+	width:100%;
+	min-width: 700px;
+	margin-left: -10px;
+	margin-bottom: 20px;
+	/*background-color: red;*/
+}
+.d32ndDiv{
+	float: left;
+	clear: right;
+	display: inline-block;
+	min-width: 700px;
+	width: 100%;
+	margin-left: -10px;
+	border:1px solid #444;
+	border-radius: 8px;
+	background-color:#898898;
+	margin-top: 10px;
+}
+.d3left4thDiv{
+	margin-top: 14px;
+	display: block;
+	min-width: 450px;
+	max-width: 450px;
+	/*margin-bottom: 10px;*/
+	/*background-color: grey;*/
+	float: left;
+}
+.d33rdDiv{
+	margin-top: 14px;
+	display: block;
+	min-width: 450px;
+	max-width: 450px;
+	/*margin-bottom: 10px;*/
+	/*background-color: grey;*/
+	/*float: right;*/
+}

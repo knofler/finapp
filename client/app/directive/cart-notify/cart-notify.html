@@ -1,0 +1,74 @@
+    <!-- Display all cart items here  -->
+    <div class="col-sm-5 col-md-10 col-md-offset-1 cartControl">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Total</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in payload">
+                    <span ng-show="data.saved">
+                        <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src={{data.img}} style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="#">{{data.name}}</a></h4>
+                                <h5 class="media-heading"> by <a href="#">{{data.produced_by}}</a></h5>
+                                <span>Status: </span><span class="text-success"><strong>{{data.available}}</strong></span>
+                            </div>
+                        </div></td>
+                        <td class="col-sm-1 col-md-1" style="text-align: center">
+                        <input type="email" class="form-control" id="exampleInputEmail1" value={{data.quantity}}>
+                        </td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>{{data.cost | currency}}</strong></td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>{{data.cost * data.quantity | currency}}</strong></td>
+                        <td class="col-sm-1 col-md-1">
+                        <button type="button" class="btn btn-danger" ng-click="removeCartItem(data._id,data.cost * data.quantity)">
+                            <span class="glyphicon glyphicon-remove"></span> Remove
+                        </button>
+                        </td>
+                    </tr>
+                    </span>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h5>Subtotal</h5></td>
+                        <td class="text-right"><h5><strong>{{subTotal | currency}}</strong></h5></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h5>Estimated shipping</h5></td>
+                        <td class="text-right"><h5><strong>{{shipping | currency}}</strong></h5></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h3>Total</h3></td>
+                        <td class="text-right"><h3><strong>{{totalCost | currency}}</strong></h3></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>
+                        <!-- this is to launch checkout modal -->
+                        <button type="button" class="btn btn-success" ng-click="goCheckout(totalCost)">
+                              <a class="cartLinks">Checkout</a>
+                             <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
