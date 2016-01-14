@@ -19,22 +19,13 @@ function onConnect(socket) {
 
   // Insert sockets below
   require('../api/accounting/accounting.socket').register(socket);
-  require('../api/vote/vote.socket').register(socket);
   require('../api/category/category.socket').register(socket);
-  require('../api/poll/poll.socket').register(socket);
-  require('../api/purchase/purchase.socket').register(socket);
   require('../api/group/group.socket').register(socket);
   require('../api/acl/acl.socket').register(socket);
   require('../api/role/role.socket').register(socket);
-  require('../api/order/order.socket').register(socket);
-  require('../api/cart/cart.socket').register(socket);
-  require('../api/social/social.socket').register(socket);
-  require('../api/display/display.socket').register(socket);
   require('../api/chart/chart.socket').register(socket);
-  require('../api/scroll/scroll.socket').register(socket);
   require('../api/email/email.socket').register(socket);
   require('../api/upload/upload.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function (socketio) {

@@ -1,16 +1,15 @@
- <!-- ###################### HEADER #################################### -->
-<!-- Toolbars or Navbars -->
-<div ng-include="'components/navbar/navbar.html'"></div>   
+<div ng-include="'components/navbar/navbar.html'"></div>
 
-<ui-smooth-scroll></ui-smooth-scroll>
-<ui-headers></ui-headers>
-<ui-summary></ui-summary>
-<ui-about></ui-about>
-<ui-divider-1></ui-divider-1>
-<ui-customer></ui-customer>
-<ui-greywrap></ui-greywrap>
-<ui-divider-2></ui-divider-2>
-<ui-divider-3></ui-divider-3>    
-<ui-footers></ui-footers>
-   
-<!-- ********************* Single page applications Smooth scroll menu available ************************* -->
+<div class="container">
+	<file-upload uploader="uploader" chart=chart></file-upload>
+	<!-- used link to get the csv displayed, would be used mostly for programatic cases -->
+    <!-- <csv url='url'></csv> -->
+ </div>
+
+<footer class="footer">
+  <div class="container">
+      <p>Finance App |
+        <a href="https://twitter.com/merumman">@merumman</a> |
+         <a href="https://github.com/knofler/finapp/issues">Issues</a></p>
+  </div>
+ </footer>

@@ -6,7 +6,6 @@ angular.module('finapp')
       // {'title': 'Home','link': '/'},
       {'title': 'Accounting','link':'/accounting','popMsg':'Accounting','acl':'user'},
       {'title': 'Chart','link':'/chart','popMsg':'Chart','acl':'user'},
-      {'title': 'CSV','link':'/csv','popMsg':'CSV','acl':'user'},
       {'title': 'D3','link':'/d3','popMsg':'D3','acl':'user'}
       ];
     $scope.loggedinMenu       = [
