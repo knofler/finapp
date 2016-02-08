@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('finapp')
-  .controller('AccountingCtrl', function ($scope) {
+  .controller('AccountingCtrl', function ($scope,socket,pageCtrlSrv) {
     $scope.message = 'Hello';
-	
+  
     //Instantiate Accounting service
     $scope.accounting ={
       url        :'/api/accountings/',
@@ -22,16 +22,26 @@ angular.module('finapp')
     //accounting tabs implementation 
     $scope.data = {
       fields:[ 
-              {'name':'Product','header':'Product','type':'text','title':'Product','subtitle':'created_at','subtitle_header':'Entry Date'},
-              {'name':'created_at','header':'Date','type':'date'},
-              {'name':'Cost','header':'Cost','type':'number'},
+              {
+                'name':'Product',
+                'header':'Product',
+                'type':'text',
+                'title':'Product',
+                'subtitle':'created_at',
+                'subtitle_header':'Entry Date'
+                // 'noform'         :'true',
+                // 'auto_generate'  :'true',
+                // 'auto_pattern'   :'E'
+               },
+              {'name':'created_at','header':'Date','type':'date'},//if not required in form use 'noform':'true'
+              {'name':'Cost','header':'Cost','type':'number'},//if not required in add form use 'add_disable':'true'
               {'name':'Home','header':'Home','type':'number'},
               {'name':'Bill_Item','header':'Items','type':'text'},
               {'name':'Bills','header':'Bills','type':'number'},
               {'name':'Payoff','header':'Payoff','type':'number'},
               {'name':'Entertainment','header':'Entertainment','type':'number'},
               {'name':'Ciger','header':'Ciger','type':'number'},
-              {'name':'Groceries','header':'Groceries','type':'number'},
+              {'name':'Groceries','header':'Groceries','type':'number'},//if dont want style use,'style':'false'
               {'name':'Mortgage','header':'Mortgage','type':'number'},
               {'name':'Petrol','header':'Petrol','type':'number'},
               {'name':'Food','header':'Food','type':'number'},
@@ -39,27 +49,24 @@ angular.module('finapp')
               {'name':'Toll','header':'Toll','type':'number'},
               {'name':'Total_Expenses','header':'Total','type':'number'}
               ],
+      subheader:'Accounting for everyday expenses',        
       url:'/api/accountings/',
+      sockets:'accounting',
       model:"accounting",
       modal:"accountings"
-     }   
+     };
 
-    //display tabs implementation 
-    // $scope.data = {
-    //   fields:[ 
-    //           {'name':'title','header':'Title','type':'text','title':'Title','subtitle':'created_at','subtitle_header':'Entry Date'},
-    //           {'name':'created_at','header':'Date','type':'date'},
-    //           {'name':'article','header':'Article','type':'text'},
-    //           {'name':'img','header':'Image','type':'img'},
-    //           {'name':'cost','header':'Cost','type':'number'},
-    //           {'name':'quantity','header':'Quantity','type':'number'},
-    //           {'name':'latitude','header':'Latitude','type':'text'},
-    //           {'name':'longitude','header':'Longitude','type':'text'},
-    //           {'name':'created_by','header':'Created by','type':'text'}
-    //           ],
-    //   url:'/api/displays',
-    //   model:"display",
-    //   modal:"displays"
-    //   };   
+    //On Sockets Add notification, execute function 
+    socket.socket.on("accountingAddNotify",function(data){
+      console.log('accountingAddNotify socket arrived with data', data);
+      //send email for approval
+      // $scope.sendMail('rumman.ahmed@mq.edu.au','CAB Approval',"Please approve the CAB"); 
+      });
+    //On Sockets Update notification, execute function
+    socket.socket.on("accountingUpdateNotify",function(data){
+      console.log('accountingUpdateNotify socket arrived with data', data);
+      //Approved notification recieved
+      // $scope.sendMail('rumman.ahmed@mq.edu.au','CAB Approval',"Approved/Declined CAB Request"); 
+     });      
 
   });

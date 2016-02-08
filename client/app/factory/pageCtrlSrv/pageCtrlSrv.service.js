@@ -55,6 +55,7 @@ angular.module('finapp')
       $rootScope.appAKS           = [];
       $rootScope.hdriveData       = [];
       $rootScope.newEntry         = '';
+      $rootScope.newAutoField     = '';
       $rootScope.lastID           = '';
       $rootScope.last_entry       = ''; 
 
@@ -93,14 +94,14 @@ angular.module('finapp')
       $rootScope.loanStatus               = '';
 
       //send notification email for license expiry using nodemailer   
-      var licData = '';
-      $rootScope.mailTo      = ['rumman.ahmed@mq.edu.au','leisa.harrison@mq.edu.au','alfred.wong@mq.edu.au','andy.baho@mq.edu.au','david.ly@mq.edu.au'];
+      var licData              = '';
+      $rootScope.mailTo        = ['rumman.ahmed@mq.edu.au','leisa.harrison@mq.edu.au','alfred.wong@mq.edu.au','andy.baho@mq.edu.au','david.ly@mq.edu.au'];
 
-      $rootScope.sendMail      = function (subject,body){
+      $rootScope.sendMail      = function (to,subject,body){
         var emailCount =1;
        
           $http.post('/api/emails/', {
-            to:$rootScope.mailTo,
+            to:to,
             from:"Asset Register",
             subject:subject,
             text:body,
@@ -134,7 +135,7 @@ angular.module('finapp')
           
             }else if (diffDate <= 30){
               console.log("license will be expiring in 30 days, send notfication email");
-                $rootScope.sendMail(subject,body);
+                $rootScope.sendMail($rootScope.mailTo,subject,body);
             }
             else{
               console.log("lic will expire on " + expDate);
@@ -172,7 +173,6 @@ angular.module('finapp')
            })
        },604800000)
   
-
       //get dynamic options from DB
       $rootScope.getDynamicOptions = function(){
         var catName = '';
@@ -747,8 +747,28 @@ angular.module('finapp')
             $rootScope.lastID = getLastEntry._id;
             $rootScope.last_entry = getLastEntry;
           console.log("lastID:",$rootScope.lastID);
+          console.log("last_entry:",$rootScope.last_entry);
          });
        };  
+      $rootScope.auto_field         = function(model,autofield,pattern){
+        $http.get('/api/'+model+'/last/').success(function(getLastEntry){
+          console.log("function recieved data : model-> ",model, 'autofield -> ', autofield , ' pattern -> ', pattern  );
+            var lastEntry = getLastEntry[autofield];
+            console.log("lastEntry is :: ", lastEntry);
+            //remove numaric data from mixed string
+            if(lastEntry !== undefined){
+              var numbersData = lastEntry.replace(/\D/g,'');
+              //increament number
+              numbersData++;  
+              $rootScope.newAutoField = pattern+numbersData;
+            }else{
+              $rootScope.newAutoField = pattern+1;
+            }
+            console.log("lastEntry:",lastEntry);
+            console.log("$rootScope.newAutoField:",$rootScope.newAutoField);
+            
+          });
+       };
       //Function to write to CSV
       $rootScope.writetoCsv         = function(data,columnLength,dataHeader){
         if (data == ''){
@@ -1494,26 +1514,30 @@ angular.module('finapp')
                 controller: 'ModalDisplayInstanceCtrl'
               })
             },
-          addModalData  : function(data){
-            $rootScope.addmodalinfo['url'] = data.url;
-            $rootScope.addmodalinfo['model'] = data.model;
-            $rootScope.addmodalinfo['fields'] = data.fields;
+          addModalData    : function(data){
+            $rootScope.addmodalinfo['url']     = data.url;
+            $rootScope.addmodalinfo['sockets'] = data.sockets;
+            $rootScope.addmodalinfo['model']   = data.model;
+            $rootScope.addmodalinfo['modal']   = data.modal;
+            $rootScope.addmodalinfo['fields']  = data.fields;
 
               var modalInstance = $modal.open({
                 templateUrl: 'components/modal/AddModal.html',
                 controller: 'ModalAddInstanceCtrl'
               })
             },     
-          editModalData : function(data,itemid){
-            $rootScope.editmodalinfo['url'] = data.url;
-            $rootScope.editmodalinfo['model'] = data.model;
-            $rootScope.editmodalinfo['fields'] = data.fields;
-            $rootScope.editmodalinfo['id'] = itemid;
+          editModalData   : function(data,itemid){
+            $rootScope.editmodalinfo['url']     = data.url;
+            $rootScope.editmodalinfo['model']   = data.model;
+            $rootScope.editmodalinfo['sockets'] = data.sockets;
+            $rootScope.editmodalinfo['modal']   = data.modal;
+            $rootScope.editmodalinfo['fields']  = data.fields;
+            $rootScope.editmodalinfo['id']      = itemid;
               var modalInstance = $modal.open({
                 templateUrl: 'components/modal/EditModal.html',
                 controller: 'ModalEditInstanceCtrl'
               })
-          },
+            },
           deleteModalData : function(data,itemid){
               $rootScope.deletemodalinfo['url']    = data.url;
               $rootScope.deletemodalinfo['model']  = data.model;

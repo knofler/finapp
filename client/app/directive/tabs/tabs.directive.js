@@ -9,15 +9,15 @@ angular.module('finapp')
 		  	  $scope.displayData = gotData;	
 		  	  $scope.showmodalinfo.fields.forEach(function(data){
 		  	  	// console.log("data is ", data.type);
-		  	  	if (data.type === 'number'){
+		  	  	if (data.type === 'number' && data.style !== 'false'){
 		  	  		$scope.displayData[data.name] = $filter('currency')($scope.displayData[data.name]);
 		  	  		// console.log("found number type data", $scope.displayData[data.name])
-		  	  	}else if( data.type === 'date'){
+		  	  	}else if( data.type === 'date' && data.style !== 'false'){
 		  	  		$scope.displayData[data.name] = $filter('date','yyyy-MM-dd')($scope.displayData[data.name]);
 		  	  		// console.log("found date type data", $scope.displayData[data.name])
-		  	  	}else if( data.type === 'text'){
-		  	  	
-		  	  	}
+		  	  	}else if( data.type === 'text' || data.type === 'select' || data.type === 'radio' && data.style !== 'false'){
+				  	$scope.displayData[data.name] = $filter('capitalize')($scope.displayData[data.name]);
+				 }
 		  	  })
 		  	  socket.syncUpdates($scope.showmodalinfo.model,$scope.displayData);
 		  	 });
@@ -48,20 +48,55 @@ angular.module('finapp')
    $scope.text   = false;
 
    //get last inserted id
-   $scope.getLastEntry($scope.addmodalinfo.tabname); 
+   $scope.addmodalinfo.fields.forEach(function(eachfield){
+		// console.log("auto generate code is: ",eachfield.auto_generate);
+		if(eachfield.auto_generate == 'true'){
+			console.log("eachfield.name is :: ", eachfield.name);
+			console.log("newAutoField is :: ", $scope.newAutoField);
+			  $scope.auto_field($scope.addmodalinfo.modal,eachfield.name,eachfield.auto_pattern); 
+			console.log("$scope.formData is ", $scope.formData[eachfield.name]);
+		}
+	});
+
+   // $scope.getLastEntry($scope.addmodalinfo.modal); 
+   // $scope.getLastID($scope.addmodalinfo.modal); 
 
    $scope.add    = function () {
-   		$scope.formData['created']    = new Date();
+	   	$scope.addmodalinfo.fields.forEach(function(eachfield){
+			// console.log("auto generate code is: ",eachfield.auto_generate);
+			if(eachfield.auto_generate == 'true'){
+				console.log("eachfield.name is :: ", eachfield.name);
+				console.log("newAutoField is :: ", $scope.newAutoField);
+				if($scope.newAutoField ==''){
+				  $scope.formData[eachfield.name] = 0
+				}else{
+				  $scope.formData[eachfield.name] = $scope.newAutoField;
+				}
+				
+				console.log("$scope.formData is ", $scope.formData[eachfield.name]);
+			}
+	   	});
+
+   		$scope.formData['created_at'] = new Date();
         $scope.formData['created_by'] = $scope.getCurrentUser().name;   
         $scope.formData['latitude']   = $scope.getLatitude;
         $scope.formData['longitude']  = $scope.getLongitude;
 
         //Add data to database
         $http.post(url,$scope.formData).success(function(senddata){
+        	//this is default socket as any form data added
         	socket.socket.emit("data_added",{
         		model:$scope.addmodalinfo.model,
         		update:senddata
         	});
+        	//this is specific socket data tab specific.
+        	if($scope.addmodalinfo.sockets !== undefined){
+				socket.socket.emit($scope.addmodalinfo.sockets+'_added',{
+        			model:$scope.addmodalinfo.model,
+	        		update:senddata
+				 });
+        	 }
+        	
         });
 
         // console.log("Purchase record of  : " + $scope.formData.faculty_ref + " created at " + new Date() + " by " + $scope.getCurrentUser().name);
@@ -114,16 +149,24 @@ angular.module('finapp')
 
 	   
 	 //update tables with form data
-	  $scope.EditformData['edited']    =  new Date();
-      $scope.EditformData['edited_by'] = $scope.getCurrentUser()._id;
+	  $scope.EditformData['edited_at'] = new Date();
+      $scope.EditformData['edited_by'] = $scope.getCurrentUser().name;
       $scope.EditformData['latitude']  = $scope.getLatitude;
       $scope.EditformData['longitude'] = $scope.getLongitude;
   
      $http.put(url,$scope.EditformData).success(function(senddata){
-        	socket.socket.emit("data_updated",{
-        		model:$scope.editmodalinfo.model,
+    	//this is default socket as any form data added
+    	socket.socket.emit("data_updated",{
+    		model:$scope.editmodalinfo.model,
+    		update:senddata
+    	});
+        //this is specific socket data tab specific.
+    	if($scope.editmodalinfo.sockets !== undefined){
+			socket.socket.emit($scope.editmodalinfo.sockets+'_updated',{
+    			model:$scope.editmodalinfo.model,
         		update:senddata
-        	});
+			 });
+    	 }	
         });
     
      // console.log("Purchase record  : " + $scope.EditData[$scope.EditData.length-1].faculty_ref + " edited at " + new Date() + " by " + $scope.getCurrentUser().name);
@@ -175,12 +218,13 @@ angular.module('finapp')
  	      })
 .controller('ModalCSVInstanceCtrl',function ($scope,$http,socket,pageCtrlSrv,$modalInstance,Auth) {
 
-		  var url = '/api/'+$scope.tabname;
+		  var url = '/api/'+$scope.tabname +'/';
 		  // making pageCtrlSrv function available for the controller
 		  $scope.csvOut    = pageCtrlSrv.csvOut;
 		  console.log("pageCtrlSrv.tabname is : ", $scope.tabname)
 		  //get all colums fields available from the dataRepo
 		  $http.get(url).success(function(gotData){
+		  	console.log("gotData from url is :: ", gotData);
 		  	$scope.dataRepo = gotData;
 		  	$scope.columns = Object.keys($scope.dataRepo[0]);
 		  });
@@ -197,15 +241,21 @@ angular.module('finapp')
 		    var customData = [];
 		    //insert field choices and selected rows data into customData array.
 		    $scope.selectDataArray.forEach(function(getEachRow){
+		    	console.log("getEachRow is :: ",getEachRow);
 		      $scope.formData.columns.forEach(function(getEachColumn){
 		        // console.log("for each row data is : ", getEachRow);
 		        // console.log("for each row coulmn selected is : ", getEachColumn);
-		        // console.log("for each row Custom data auto select is : ", getEachRow[getEachColumn]);
+		        console.log("for each row Custom data auto select is : ", getEachRow[getEachColumn]);
 		        customData.push(getEachRow[getEachColumn]);
 		       });
-		      // console.log('customData is : ' , customData);
+		      console.log('customData inside is : ' , customData);
 		     });
 		    console.log("total fields ",$scope.formData.columns.length);
+		    console.log('customData is : ' , customData);
+		    console.log('$scope.formData.columns.length is : ' , $scope.formData.columns.length);
+		    console.log('$scope.formData.columns is : ' , $scope.formData.columns);
+
+		    // console.log('customData is : ' , customData);
 		    //push customData array for csv conversion
 		     $scope.csvOut(customData,$scope.formData.columns.length,$scope.formData.columns);
 		    //close modal after updated
@@ -216,7 +266,7 @@ angular.module('finapp')
 		  $("input:checked").each(function(){
 		    $http.get(url+this.id).success(function(getData){
 		     $scope.selectDataArray.push(getData); 
-		      // console.log(getDevice);
+		      console.log(getData);
 		     });
 		  });
 
@@ -287,15 +337,16 @@ angular.module('finapp')
 		          		// console.log("each data.type is : " ,eachfield.type)
 		          		// console.log("each data.name is : " ,eachfield.name)
 		          		// console.log("scope.dataRepo[data.name]", eachdata[eachfield.name])
-				  	  	if (eachfield.type === 'number'){
+				  	  	if (eachfield.type === 'number' && eachfield.style !== 'false'){
 				  	  		eachdata[eachfield.name] = $filter('currency')(eachdata[eachfield.name]);
 				  	  		// console.log("found number type data", scope.dataRepo)
-				  	  	}else if( eachfield.type === 'date'){
-				  	  		// eachdata[eachfield.name] = $filter('date','yyyy-MM-dd')(eachdata[eachfield.name]);
+				  	  	}else if( eachfield.type === 'date' && eachfield.style !== 'false'){
+				  	  		eachdata[eachfield.name] = $filter('date','yyyy-MM-dd')(eachdata[eachfield.name]);
 				  	  		// console.log("found date type data", scope.dataRepo[data.name])
-				  	  	}else if( eachfield.type === 'text'){
+				  	  	}else if( eachfield.type === 'text' || eachfield.type === 'select' || eachfield.type === 'radio' && eachfield.style !== 'false'){
 				  	  		eachdata[eachfield.name] = $filter('capitalize')(eachdata[eachfield.name]);
 				  	  	}
+
 				  	  	// console.log("data.repo is :: ",scope.dataRepo);
 			  	  	})
 	          	});
@@ -391,7 +442,6 @@ angular.module('finapp')
        }//end of loan
     };//end of return
   });//end of directive	
-
 
 
 

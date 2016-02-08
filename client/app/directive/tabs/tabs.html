@@ -37,7 +37,7 @@
       <div class="items col-xs-12 col-sm-6 col-md-6 col-lg-12 gapBottom clearfix"><input ng-hide="totalList"ng-model="search" 
           ng-change="filter()" type="search" class="form-control" id="input-search"  placeholder="Search records..." autofocus>
           <!-- Heading display  -->
-          <h4 ng-show="totalList" type="text" class="page-sub-header countCustom">Purchase Requisition for Faculty of Business and Economics</h4>   
+          <h4 ng-show="totalList" type="text" class="page-sub-header countCustom">{{data.subheader}}</h4>   
          </div>
 
       <!-- dynamic append toolbar -->
@@ -72,28 +72,29 @@
             <tr ng-repeat="(key,value) in filtered = (dataRepo | advancefilter:search) | orderBy:predicate:reverse |orderBy:'-created_at' |
             pagination: (currentPage-1) * pageSize| limitTo:pageSize">
               <td><input ng-show="writePage" type="checkbox" class="checkthis" id="{{value._id}}" /></td>
-                <td ng-show="value">
+                <td id="{{value[data.fields[0].name]}}" ng-show="value">
                   <a ng-class="{disabled:!writePage}"href= "" ng-click="showModalData(data,value._id)">
                     {{value[data.fields[0].name]}}</a>
                  </td>
-                <td ng-show="value">{{value[data.fields[1].name] | date:'yyyy-MM-dd' }}</td>
-                <td ng-show="value">{{value[data.fields[2].name]}}</td>
-                <td ng-show="value">{{value[data.fields[3].name]}}</td>
-                <td ng-show="value">{{value[data.fields[4].name]}}</td>
-                <td ng-show="value">{{value[data.fields[5].name]}}</td>
-                <td ng-show="value">{{value[data.fields[6].name]}}</td>
-                <td ng-show="value">
-                    <a ng-class="{disabled:!writePage}" href="" ng-click="userDetails('sm',value[data.fields[7].name])">
-                      {{value[data.fields[7].name]}}</a>
-                 </td>
-                <td ng-show="value">{{value[data.fields[8].name]}}</td>
-                <td ng-show="value">{{value[data.fields[9].name]}}</td>
-                <td ng-show="value">{{value[data.fields[10].name]}}</td>
-                <td ng-show="value">{{value[data.fields[11].name]}}</td>
-                <td ng-show="value">{{value[data.fields[12].name]}}</td>
-                <td ng-show="value">{{value[data.fields[13].name]}}</td>
-                <td ng-show="value">{{value[data.fields[14].name]}}</td>
-                <td ng-show="value">{{value[data.fields[15].name]}}</td>
+              <td id="{{value[data.fields[1].name]}}" ng-show="value">{{value[data.fields[1].name] | date:'yyyy-MM-dd' }}</td>
+              <td id="{{value[data.fields[2].name]}}"ng-show="value">{{value[data.fields[2].name]}}</td>
+              <td id="{{value[data.fields[3].name]}}" ng-show="value">{{value[data.fields[3].name]}}</td>
+              <td id="{{value[data.fields[4].name]}}" ng-show="value">{{value[data.fields[4].name]}}</td>
+              <td id="{{value[data.fields[5].name]}}" ng-show="value">{{value[data.fields[5].name]}}</td>
+              <td id="{{value[data.fields[6].name]}}" ng-show="value">{{value[data.fields[6].name]}}</td>
+              <td id="{{value[data.fields[7].name]}}" ng-show="value">{{value[data.fields[7].name]}}</td>
+              <td id="{{value[data.fields[8].name]}}" ng-show="value">
+                <a ng-class="{disabled:!writePage}" href="" ng-click="userDetails('sm',value[data.fields[8].name])">
+                  {{value[data.fields[8].name]}}
+                </a>  
+              </td>
+              <td id="{{value[data.fields[9].name]}}" ng-show="value">{{value[data.fields[9].name]}}</td>
+              <td id="{{value[data.fields[10].name]}}" ng-show="value">{{value[data.fields[10].name]}}</td>
+              <td id="{{value[data.fields[11].name]}}" ng-show="value">{{value[data.fields[11].name]}}</td>
+              <td id="{{value[data.fields[12].name]}}" ng-show="value">{{value[data.fields[12].name]}}</td>
+              <td id="{{value[data.fields[13].name]}}" ng-show="value">{{value[data.fields[13].name]}}</td>
+              <td id="{{value[data.fields[14].name]}}" ng-show="value">{{value[data.fields[14].name]}}</td>
+              <td id="{{value[data.fields[15].name]}}" ng-show="value">{{value[data.fields[15].name]}}</td>
               <td>
                 <p>
                   <button class="btn btn-primary btn-xs" ng-show="writePage" data-title="Edit" ng-click="editModalData(data,value._id)" data-placement="top" rel="tooltip">

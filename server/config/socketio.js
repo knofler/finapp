@@ -111,6 +111,15 @@ module.exports = function (socketio) {
      socket.emit('runChartUpdate',{data:data});
     })
 
+    //this eocket initial part rename to specific service based on tabs directive declaration
+    socket.on('accounting_added',function(data){
+      socket.broadcast.emit('accountingAddNotify',data);
+      socket.emit('accountingAddNotify',data);
+     });
+    socket.on('accounting_updated',function(data){
+      socket.broadcast.emit('accountingUpdateNotify',data);
+      socket.emit('accountingUpdateNotify',data);
+     });
     // Call onDisconnect.
     socket.on('disconnect', function () {
       onDisconnect(socket);
