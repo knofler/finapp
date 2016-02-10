@@ -95,9 +95,10 @@ angular.module('finapp')
 
       //send notification email for license expiry using nodemailer   
       var licData              = '';
+      var fromEmail            = "itsufbe-softwarelicence@mq.edu.au";
       $rootScope.mailTo        = ['rumman.ahmed@mq.edu.au','leisa.harrison@mq.edu.au','alfred.wong@mq.edu.au','andy.baho@mq.edu.au','david.ly@mq.edu.au'];
 
-      $rootScope.sendMail      = function (to,subject,body){
+      $rootScope.sendMail                = function (to,subject,body){
         var emailCount =1;
        
           $http.post('/api/emails/', {
@@ -119,7 +120,52 @@ angular.module('finapp')
               },200)
             }); 
        };
-      $rootScope.hasLicExpired = function (expDate,subject,body) {
+      $rootScope.send_notification_email = function (type,logic,notification) {
+        var   subject = "Notification Subject",
+              body    = "Email Notification Body",
+              email   = "itsufbe-softwarelicence@mq.edu.au";
+        //check specific type of notification for each model and adjust variables accordingly
+        if (logic === 'cab'){
+          if(type == 'add'){
+              subject = "Change Request Number::: " + notification.change_no + ", Requested By : " + $filter('capitalize')(notification.created_by);
+              body = "*******************************************************************************************"+"\n"+
+               "Change Requested on : " + $filter('date')(notification.created_at,"longDate")+"\n"+
+               "Estimated hours required: " +notification.estimated_effort+ ' Hours'+"\n"+
+               "--------------------------------------------------------------------------------"+"\n"+
+               "Changes: " + notification.change_desc + "."+"\n"+"\n"+
+               "Test Result: " + notification.testresult + "."+"\n"+"\n"+
+               "Rollback Plan: "+ notification.rollback_plan_desc+"\n"+"\n"+"\n"+
+               "--------------------------------------------------------------------------------"+"\n"+
+                "Asset Register Team" + "\n"+
+               "*******************************************************************************************";
+              email = 'rumman.ahmed@mq.edu.au';
+           } else if (type === 'edit'){
+               subject = "Change Request Number::: " + notification.change_no + ", Authorized By : " + $filter('capitalize')(notification.edited_by);
+               body = "*******************************************************************************************"+"\n"+
+               "Change Requested on : " + $filter('date')(notification.created_at,"longDate")+"\n"+
+               "Decision made on : " + $filter('date')(notification.edited_at,"longDate")+"\n"+
+               "Approver ID: " + notification.approved_by + "."+"\n"+"\n"+
+               "--------------------------------------------------------------------------------"+"\n"+
+               "Changes: " + notification.change_desc + "."+"\n"+"\n"+
+               "Test Result: " + notification.testresult + "."+"\n"+"\n"+
+               "Rollback Plan: "+ notification.rollback_plan_desc+"\n"+"\n"+"\n"+
+               "Change Request Status: " + notification.status +"\n"+"\n"+"\n"+
+               "--------------------------------------------------------------------------------"+"\n"+
+               "Asset Register Team" + "\n"+
+               "*******************************************************************************************";
+               email = notification.created_by_email;
+           }
+         
+        }else{
+
+         };
+
+        //send email for approval
+        $rootScope.sendMail(email,subject,body); 
+
+
+       };
+      $rootScope.hasLicExpired           = function (expDate,subject,body) {
          if (expDate === undefined){
           return;
          }else{
@@ -991,7 +1037,7 @@ angular.module('finapp')
           last_id             : $rootScope.getLastID,
           
           //Open modals with appropriate parameters
-          popAdd    : function(ctrlName,size){
+          popAdd              : function(ctrlName,size){
             $rootScope.currentPage =1;
               if (ctrlName == 'devices'){
                 var modalAddInstance = $modal.open({
@@ -1035,7 +1081,7 @@ angular.module('finapp')
               }
               // alert(ctrlName);
             },
-          popDelete : function(ctrlName,targetID){
+          popDelete           : function(ctrlName,targetID){
             if(ctrlName =='devices'){
               ctrlName = 'leases';
             }
@@ -1054,7 +1100,7 @@ angular.module('finapp')
                   }
               });
             },
-          popEdit   : function(ctrlName,targetID) {
+          popEdit             : function(ctrlName,targetID) {
             if(ctrlName == 'device'){
               $http.get('/api/leases/'+targetID).success(function(getLease){
                 if(getLease !==null){
@@ -1108,7 +1154,7 @@ angular.module('finapp')
               }  
               });
            },
-          popAssign : function(appID){
+          popAssign           : function(appID){
             console.log("pop assign appName is: ", appID);
             $rootScope.applicationName = appID;
               var modalAppAssignInstance = $modal.open({
@@ -1121,7 +1167,7 @@ angular.module('finapp')
                   }
                });
            },
-          popCSV    : function(tabname,size){
+          popCSV              : function(tabname,size){
             $rootScope.tabname = tabname;   
             console.log("$rootScope.tabname is ", $rootScope.tabname)
              var modalCSVInstance = $modal.open({
@@ -1130,7 +1176,7 @@ angular.module('finapp')
                 size:size
              });
              },  
-          popUsers  : function(size,oneID){
+          popUsers            : function(size,oneID){
             // oneID=angular.lowercase(oneID);
             // console.log("oneID inserting ", oneID);
             oneID = oneID.replace(/\D/g,'');
@@ -1164,7 +1210,7 @@ angular.module('finapp')
                 } 
               });
            },
-          popDelwarn: function(ctrlName,internal,targetID,imgName){
+          popDelwarn          : function(ctrlName,internal,targetID,imgName){
             console.log("image del id is :: ", targetID, " and image name is :: ", imgName + " internal : ", internal);
             $http.get('/api/'+ctrlName+'s/'+targetID).success(function(getTarget){
               console.log("DeleteData for AKS is :: ", getTarget)
@@ -1183,7 +1229,7 @@ angular.module('finapp')
               }
               })
             },
-          showData  : function(Name,ctrlName,targetID,optionalName) {
+          showData            : function(Name,ctrlName,targetID,optionalName) {
             $rootScope.applicationName = Name;
                 if(ctrlName       == 'applications' && optionalName == 'licMgts'){
                   $http.get('/api/licMgts/'+targetID).success(function(getapp){
@@ -1486,7 +1532,7 @@ angular.module('finapp')
                } 
               });
             },
-          showUser  : function(appID){
+          showUser            : function(appID){
              $rootScope.applicationName = appID;
               var modalLicUser =$modal.open({
                 templateUrl:'components/modal/licUserModal.html',
@@ -1503,9 +1549,8 @@ angular.module('finapp')
                 $log.info('Modal dismissed at: ' + new Date());
                });
               },
-          showModalData : function(data,itemid){
-            $rootScope.showmodalinfo['url'] = data.url;
-            $rootScope.showmodalinfo['model'] = data.model;
+          showModalData       : function(data,itemid){
+            $rootScope.showmodalinfo['config']  = data.config;
             $rootScope.showmodalinfo['fields'] = data.fields;
             $rootScope.showmodalinfo['id'] = itemid;
 
@@ -1514,23 +1559,17 @@ angular.module('finapp')
                 controller: 'ModalDisplayInstanceCtrl'
               })
             },
-          addModalData    : function(data){
-            $rootScope.addmodalinfo['url']     = data.url;
-            $rootScope.addmodalinfo['sockets'] = data.sockets;
-            $rootScope.addmodalinfo['model']   = data.model;
-            $rootScope.addmodalinfo['modal']   = data.modal;
+          addModalData        : function(data){
+            $rootScope.addmodalinfo['config']  = data.config;
             $rootScope.addmodalinfo['fields']  = data.fields;
-
               var modalInstance = $modal.open({
                 templateUrl: 'components/modal/AddModal.html',
                 controller: 'ModalAddInstanceCtrl'
               })
             },     
-          editModalData   : function(data,itemid){
-            $rootScope.editmodalinfo['url']     = data.url;
-            $rootScope.editmodalinfo['model']   = data.model;
-            $rootScope.editmodalinfo['sockets'] = data.sockets;
-            $rootScope.editmodalinfo['modal']   = data.modal;
+          editModalData       : function(data,itemid){
+            console.log("I am clicked data:: ",data , "itemid:: ",itemid )
+            $rootScope.editmodalinfo['config']  = data.config;
             $rootScope.editmodalinfo['fields']  = data.fields;
             $rootScope.editmodalinfo['id']      = itemid;
               var modalInstance = $modal.open({
@@ -1538,15 +1577,15 @@ angular.module('finapp')
                 controller: 'ModalEditInstanceCtrl'
               })
             },
-          deleteModalData : function(data,itemid){
-              $rootScope.deletemodalinfo['url']    = data.url;
-              $rootScope.deletemodalinfo['model']  = data.model;
-              $rootScope.deletemodalinfo['fields'] = data.fields;
-              $rootScope.deletemodalinfo['id']     = itemid;
-              var modalInstance = $modal.open({
-                  templateUrl:'components/modal/DeleteModal.html',
-                  controller:'ModalDeleteInstanceCtrl'
-              })
-            },      
-        }
+          deleteModalData     : function(data,itemid){
+            $rootScope.deletemodalinfo['config']  = data.config;
+            $rootScope.deletemodalinfo['fields'] = data.fields;
+            $rootScope.deletemodalinfo['id']     = itemid;
+            var modalInstance = $modal.open({
+                templateUrl:'components/modal/DeleteModal.html',
+                controller:'ModalDeleteInstanceCtrl'
+            })       
+            }
+       }   
+
       })

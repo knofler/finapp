@@ -13,12 +13,14 @@
 <div class="modal-body">
   <form class="{{editmodalinfo.model}}-form" name="{{editmodalinfo.model}}form">
       <div ng-repeat="(key,value) in editmodalinfo.fields">
+        <div ng-hide="{{value.noform}}">
             <div ng-hide="{{value.type}}" class="form-group newmodalForm-group">
               <div class="input-group col-sm-11">
                   <span class="input-group-addon">{{value.header}}</span>
                 <input class="form-control" id='{{value.name}}' name='{{value.name}}' type='{{value.type}}' ng-model="EditformData[value.name]"  placeholder='{{EditData[value.name]}}'/>
               </div>
             </div>  
+        </div>        
         <div ng-show="{{value.type}}" class="form-group newmodalForm-group">
           <div class="input-group col-md-11">
              <span class="input-group-addon">{{value.header}}</span>
@@ -31,8 +33,8 @@
     </div>    
 
   <div class="form-group newmodalForm-group">
-     <div class="input-group col-md-11">  
-        <button type="button" class="btn btn-warning btn-sm" style="width: 30%;"
+     <div class="input-group col-lg-10 col-md-10 col-sm-12 col-xs-12 ">  
+          <button type="button" class="btn btn-warning btn-sm" style="width: 45%;" 
         ng-click="edit(editmodalinfo.id)"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
       </div>
    </div>

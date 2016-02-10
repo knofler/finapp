@@ -1,7 +1,7 @@
 <div class="container mainContainer">
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">{{data.model | capitalize}}:
+      <h1 class="page-header">{{data.config.model | capitalize}}:
         <span>
           <button ng-hide="totalList" ng-click="showAll()" class="btn btn-info" popover="Show All records!" popover-trigger="mouseenter">Show All</button>
           <button ng-show="searchBox" ng-click="searchData()" class="btn btn-info" popover="Bring Search panel Back!" popover-trigger="mouseenter">Search Box</button>
@@ -37,7 +37,7 @@
       <div class="items col-xs-12 col-sm-6 col-md-6 col-lg-12 gapBottom clearfix"><input ng-hide="totalList"ng-model="search" 
           ng-change="filter()" type="search" class="form-control" id="input-search"  placeholder="Search records..." autofocus>
           <!-- Heading display  -->
-          <h4 ng-show="totalList" type="text" class="page-sub-header countCustom">{{data.subheader}}</h4>   
+          <h4 ng-show="totalList" type="text" class="page-sub-header countCustom">{{data.config.subheader}}</h4>   
          </div>
 
       <!-- dynamic append toolbar -->
@@ -45,7 +45,7 @@
       <!-- static toolbar -->
       <div class='items col-xs-12 col-sm-6 col-md-6 col-lg-12 gapBottom clearfix' id='toolbar'>
         <!-- *************************************************************** -->
-        <button class='btn' type= "button" ng-click="popCSV(data.modal,'small')">
+        <button class='btn' type= "button" ng-click="popCSV(data.config.modal,'small')">
         <span class='glyphicon glyphicon-download-alt' popover-placement='top' popover='CSV' popover-trigger='mouseenter'>  
         </span>
         </button>

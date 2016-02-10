@@ -4,7 +4,7 @@ angular.module('finapp')
   .controller('AccountingCtrl', function ($scope,socket,pageCtrlSrv) {
     $scope.message = 'Hello';
   
-    //Instantiate Accounting service
+    //Instantiate Accounting service for charts
     $scope.accounting ={
       url        :'/api/accountings/',
       model      :'accounting',
@@ -49,24 +49,23 @@ angular.module('finapp')
               {'name':'Toll','header':'Toll','type':'number'},
               {'name':'Total_Expenses','header':'Total','type':'number'}
               ],
-      subheader:'Accounting for everyday expenses',        
-      url:'/api/accountings/',
-      sockets:'accounting',
-      model:"accounting",
-      modal:"accountings"
+      config:{
+        // emails     :'true' //enable this to send email notification on data added and updated  
+        subheader :'Accounting for everyday expenses',        
+        url       :'/api/accountings/',
+        sockets   :'accounting',
+        model     :'accounting',
+        modal     :'accountings'
+       }
      };
 
     //On Sockets Add notification, execute function 
     socket.socket.on("accountingAddNotify",function(data){
       console.log('accountingAddNotify socket arrived with data', data);
-      //send email for approval
-      // $scope.sendMail('rumman.ahmed@mq.edu.au','CAB Approval',"Please approve the CAB"); 
       });
     //On Sockets Update notification, execute function
     socket.socket.on("accountingUpdateNotify",function(data){
       console.log('accountingUpdateNotify socket arrived with data', data);
-      //Approved notification recieved
-      // $scope.sendMail('rumman.ahmed@mq.edu.au','CAB Approval',"Approved/Declined CAB Request"); 
      });      
 
   });

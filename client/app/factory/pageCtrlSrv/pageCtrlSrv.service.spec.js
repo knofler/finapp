@@ -3,7 +3,7 @@
 describe('Service: pageCtrlSrv', function () {
 
   // load the service's module
-  beforeEach(module('finapp'));
+  beforeEach(module('serveMeApp'));
 
   // instantiate service
   var pageCtrlSrv;

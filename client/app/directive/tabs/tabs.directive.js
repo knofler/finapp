@@ -3,7 +3,7 @@
 angular.module('finapp')
 .controller('ModalDisplayInstanceCtrl', function ($scope,$http,socket,pageCtrlSrv,$modalInstance,$filter) {
 		    console.log("$scope.showmodalinfo is " , $scope.showmodalinfo)
-			var url = $scope.showmodalinfo.url+"/"+$scope.showmodalinfo.id;
+			var url = $scope.showmodalinfo.config.url+$scope.showmodalinfo.id;
 
 		  	$http.get(url).success(function(gotData){
 		  	  $scope.displayData = gotData;	
@@ -33,11 +33,11 @@ angular.module('finapp')
 			    $modalInstance.dismiss('cancel');
 			   };
 	     })
-.controller('ModalAddInstanceCtrl',function ($scope,$http,socket,pageCtrlSrv,$modalInstance,Auth,$cookies) {
+.controller('ModalAddInstanceCtrl',function ($scope,$http,socket,pageCtrlSrv,$modalInstance,Auth,$cookies,$filter) {
 		  
    console.log("$scope.addmodalinfo is " , $scope.addmodalinfo)
-   var url = $scope.addmodalinfo.url;
-   console.log("add model is :: ", $scope.addmodalinfo.model);
+   var url = $scope.addmodalinfo.config.url;
+   console.log("add model is :: ", $scope.addmodalinfo.config.model);
    
    $scope.formData       = {};
    $scope.getCurrentUser = Auth.getCurrentUser;
@@ -53,10 +53,10 @@ angular.module('finapp')
 		if(eachfield.auto_generate == 'true'){
 			console.log("eachfield.name is :: ", eachfield.name);
 			console.log("newAutoField is :: ", $scope.newAutoField);
-			  $scope.auto_field($scope.addmodalinfo.modal,eachfield.name,eachfield.auto_pattern); 
+			  $scope.auto_field($scope.addmodalinfo.config.modal,eachfield.name,eachfield.auto_pattern); 
 			console.log("$scope.formData is ", $scope.formData[eachfield.name]);
 		}
-	});
+		});
 
    // $scope.getLastEntry($scope.addmodalinfo.modal); 
    // $scope.getLastID($scope.addmodalinfo.modal); 
@@ -75,29 +75,39 @@ angular.module('finapp')
 				
 				console.log("$scope.formData is ", $scope.formData[eachfield.name]);
 			}
-	   	});
+	   		});
 
-   		$scope.formData['created_at'] = new Date();
-        $scope.formData['created_by'] = $scope.getCurrentUser().name;   
-        $scope.formData['latitude']   = $scope.getLatitude;
-        $scope.formData['longitude']  = $scope.getLongitude;
+   		$scope.formData['created_at'] 		= new Date();
+        $scope.formData['created_by'] 		= $scope.getCurrentUser().name; 
+        $scope.formData['created_by_id'] 	= $scope.getCurrentUser()._id;
+        $scope.formData['created_by_email'] = $scope.getCurrentUser().email;     
+        $scope.formData['latitude']   		= $scope.getLatitude;
+        $scope.formData['longitude']  		= $scope.getLongitude;
+
 
         //Add data to database
         $http.post(url,$scope.formData).success(function(senddata){
+
+        	//check if email notification is required for add form
+        	if($scope.addmodalinfo.config.emails == 'true'){
+			    $scope.send_notification_email('add',$scope.addmodalinfo.config.model,senddata);
+        	 };
+        	
+        	// ########## SOCKETS ###############
         	//this is default socket as any form data added
         	socket.socket.emit("data_added",{
-        		model:$scope.addmodalinfo.model,
+        		model:$scope.addmodalinfo.config.model,
         		update:senddata
-        	});
+        		});
         	//this is specific socket data tab specific.
-        	if($scope.addmodalinfo.sockets !== undefined){
-				socket.socket.emit($scope.addmodalinfo.sockets+'_added',{
-        			model:$scope.addmodalinfo.model,
+        	if($scope.addmodalinfo.config.sockets !== undefined){
+				socket.socket.emit($scope.addmodalinfo.config.sockets+'_added',{
+        			model:$scope.addmodalinfo.config.model,
 	        		update:senddata
 				 });
         	 }
         	
-        });
+        	});
 
         // console.log("Purchase record of  : " + $scope.formData.faculty_ref + " created at " + new Date() + " by " + $scope.getCurrentUser().name);
          
@@ -111,7 +121,7 @@ angular.module('finapp')
 
         //add information to cookies
         if(Object.keys($cookies).length >0 ){
-          $cookies.purchase = true;
+          // $cookies.purchase = true;
           console.log($cookies);
          }
 
@@ -124,21 +134,21 @@ angular.module('finapp')
 	    $modalInstance.dismiss('cancel');   
 	    };
   	    	
-  	    	})
-.controller('ModalEditInstanceCtrl',function ($scope,socket,$http,pageCtrlSrv,$modalInstance,Auth) {
+  })
+.controller('ModalEditInstanceCtrl',function ($scope,socket,$http,pageCtrlSrv,$modalInstance,Auth,$filter) {
 		  
 	$scope.EditformData    = {}; 
 	$scope.getCurrentUser  = Auth.getCurrentUser;
 	$scope.userInfo        = [];
 
-	var url = $scope.editmodalinfo.url+"/"+$scope.editmodalinfo.id;
+	var url = $scope.editmodalinfo.config.url+$scope.editmodalinfo.id;
 	console.log("edit url is :: ", url);
-	console.log("edit model is :: ", $scope.editmodalinfo.model);
+	console.log("edit model is :: ", $scope.editmodalinfo.config.model);
 
 
 	$http.get(url).success(function(gotData){
         $scope.EditData = gotData;
-        socket.syncUpdates($scope.editmodalinfo.model,$scope.EditData)
+        socket.syncUpdates($scope.editmodalinfo.config.model,$scope.EditData)
      });
 
 	//control mechanism to manage items for display and add forms
@@ -147,54 +157,63 @@ angular.module('finapp')
 
 	$scope.edit    = function (itemID){
 
-	   
 	 //update tables with form data
-	  $scope.EditformData['edited_at'] = new Date();
-      $scope.EditformData['edited_by'] = $scope.getCurrentUser().name;
-      $scope.EditformData['latitude']  = $scope.getLatitude;
-      $scope.EditformData['longitude'] = $scope.getLongitude;
-  
-     $http.put(url,$scope.EditformData).success(function(senddata){
-    	//this is default socket as any form data added
-    	socket.socket.emit("data_updated",{
-    		model:$scope.editmodalinfo.model,
-    		update:senddata
-    	});
-        //this is specific socket data tab specific.
-    	if($scope.editmodalinfo.sockets !== undefined){
-			socket.socket.emit($scope.editmodalinfo.sockets+'_updated',{
-    			model:$scope.editmodalinfo.model,
-        		update:senddata
-			 });
-    	 }	
-        });
-    
-     // console.log("Purchase record  : " + $scope.EditData[$scope.EditData.length-1].faculty_ref + " edited at " + new Date() + " by " + $scope.getCurrentUser().name);
-   
-     // **************Notification*********************
-     var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' edited record ' + $scope.editmodalinfo.id ;
-     // console.log(data);  
+	  $scope.EditformData['edited_at']       = new Date();
+      $scope.EditformData['edited_by']       = $scope.getCurrentUser().name;
+      $scope.EditformData['edited_by_id']    = $scope.getCurrentUser()._id;
+      $scope.EditformData['edited_by_email'] = $scope.getCurrentUser().email;
+      $scope.EditformData['latitude']  	     = $scope.getLatitude;
+      $scope.EditformData['longitude']       = $scope.getLongitude;
+	  
+	  $http.put(url,$scope.EditformData).success(function(senddata){
+	   
+	    	//check if email notification is required for add form
+	        if($scope.editmodalinfo.config.emails == 'true'){
+				    $scope.send_notification_email('edit',$scope.editmodalinfo.config.model,senddata);
+	        	 };
 
-     // Send notification broadcast to all connected users
-     pageCtrlSrv.send_notification(data);
-   
-	    $modalInstance.close();
-	    }; 
+			// ########## SOCKETS ###############
+	    	//this is default socket as any form data added
+	    	socket.socket.emit("data_updated",{
+	    		model:$scope.editmodalinfo.config.model,
+	    		update:senddata
+	    		});
+	        //this is specific socket data tab specific.
+	    	if($scope.editmodalinfo.config.sockets !== undefined){
+				socket.socket.emit($scope.editmodalinfo.config.sockets+'_updated',{
+	    			model:$scope.editmodalinfo.config.model,
+	        		update:senddata
+				 });
+	    	 }	
+
+	        });
+	    
+	     // console.log("Purchase record  : " + $scope.EditData[$scope.EditData.length-1].faculty_ref + " edited at " + new Date() + " by " + $scope.getCurrentUser().name);
+	   
+	     // **************Notification*********************
+	     var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' edited record ' + $scope.editmodalinfo.id ;
+	     // console.log(data);  
+
+	     // Send notification broadcast to all connected users
+	     pageCtrlSrv.send_notification(data);
+	   
+		    $modalInstance.close();
+	 }; 
 	$scope.ok      = function () {
-	    $modalInstance.close();
-	  };
+		    $modalInstance.close();
+		  };
 	$scope.cancel  = function () {
-	    $modalInstance.dismiss('cancel');
-	   };
+		    $modalInstance.dismiss('cancel');
+		   };
   	})
 .controller('ModalDeleteInstanceCtrl',function ($scope,$http,pageCtrlSrv,socket,$modalInstance,Auth) {
   
-	var url = $scope.deletemodalinfo.url+"/"+$scope.deletemodalinfo.id;
+	var url = $scope.deletemodalinfo.config.url+$scope.deletemodalinfo.id;
 	console.log("edit url is :: ", url);
 
 	$http.get(url).success(function(gotData){  
       $scope.DeleteData = gotData;
-      socket.syncUpdates($scope.deletemodalinfo.model,$scope.deleteData)
+      socket.syncUpdates($scope.deletemodalinfo.config.model,$scope.deleteData)
      });
 
   	$scope.getCurrentUser     = Auth.getCurrentUser;
@@ -204,7 +223,7 @@ angular.module('finapp')
 	      // console.log("Purchase Record : " + $scope.purchaseDeleteData[$scope.purchaseDeleteData.length -1].faculty_ref + " deleted at " + new Date() + " by " + $scope.getCurrentUser().name);
 	      
 	      // **************Notification*********************
-	      var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' deleted '+ $scope.deletemodalinfo.model+ ' record ' + $scope.DeleteData[deletemodalinfo.fields[0]].title; 	
+	      var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' deleted '+ $scope.deletemodalinfo.config.model+ ' record ' + $scope.DeleteData[deletemodalinfo.fields[0]].title; 	
 	      // console.log(data);  
 
 	      // Send notification broadcast to all connected users
@@ -311,24 +330,23 @@ angular.module('finapp')
     return {
       templateUrl: 'app/directive/tabs/tabs.html',
       restrict: 'EA',
-   
       link: function (scope, element, attrs) {
 
       	  //get user info
 		  scope.getCurrentUser = Auth.getCurrentUser;
-		  var rootRepo = scope.data.model+"Repo"
+		  var rootRepo = scope.data.config.model+"Repo"
 		  console.log("rootRepo is : ", rootRepo)
 
-	      $http.get(scope.data.url).success(function(getData){
+	      $http.get(scope.data.config.url).success(function(getData){
 	            scope.dataRepo=getData;
 	            // console.log("scope.dataRepo is : ", scope.dataRepo);
-	          	// console.log("data is ", scope.data.fields);
+	          	// console.log("data is ", scope.data.config.fields);
 	          	scope.dataRepo = scope.formatData(getData);
 	          	
 	             scope.columns = Object.keys(scope.dataRepo[0]);
 	             pageCtrlSrv[rootRepo] = scope.dataRepo;
 	             // console.log("pageCtrlSrv[rootRepo] is ::", pageCtrlSrv.purchaseRepo)
-	             socket.syncUpdates(scope.data.model,scope.dataRepo);
+	             socket.syncUpdates(scope.data.config.model,scope.dataRepo);
 	          });
 
 		  scope.formatData = function (data) {
@@ -353,13 +371,13 @@ angular.module('finapp')
 	          	console.log("scope.formatData ran,now to return data");
 	          	return data;
 		     }	
-          
- 		
-
+     	
+		  //Data Added socket notification recieved and execute function   
 	      socket.socket.on("appendDataView",function(data){
 	          	console.log('appendDataView socket arrived with data', data);
 	          	// scope.formatData(data);
 	           });
+	      //Data Updated socket notification recieved and execute function   
 	      socket.socket.on("updateDataView",function(data){
 	          	console.log('updateDataView socket arrived with data ', data);
 	          	// scope.formatData(data);
@@ -431,8 +449,8 @@ angular.module('finapp')
 			    }, 10);
 			  };
 
-		  scope.hasWriteAccess(scope.data.model,Auth.getCurrentUser().email);
-		  scope.hasFullAccess(scope.data.model,Auth.getCurrentUser().email);	  
+		  scope.hasWriteAccess(scope.data.config.model,Auth.getCurrentUser().email);
+		  scope.hasFullAccess(scope.data.config.model,Auth.getCurrentUser().email);	  
 		  
 		  //on directive load function run
 		  setTimeout(function(){
@@ -442,6 +460,7 @@ angular.module('finapp')
        }//end of loan
     };//end of return
   });//end of directive	
+
 
 
 
