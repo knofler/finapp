@@ -2,7 +2,7 @@
 
 angular.module('finapp')
   .controller('AccountingCtrl', function ($scope,socket,pageCtrlSrv) {
-    $scope.message = 'Hello';
+    $scope.message = 'Hellos';
   
     //Instantiate Accounting service for charts
     $scope.accounting ={
