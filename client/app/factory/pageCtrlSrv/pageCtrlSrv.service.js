@@ -93,23 +93,24 @@ angular.module('finapp')
       $rootScope.loanDeviceTypeCategory   = '';
       $rootScope.loanStatus               = '';
 
-      //send notification email for license expiry using nodemailer   
+     //send notification email for license expiry using nodemailer   
       var licData              = '';
       var fromEmail            = "itsufbe-softwarelicence@mq.edu.au";
       $rootScope.mailTo        = ['rumman.ahmed@mq.edu.au','leisa.harrison@mq.edu.au','alfred.wong@mq.edu.au','andy.baho@mq.edu.au','david.ly@mq.edu.au'];
+      $rootScope.approver      = 'rumman.ahmed@mq.edu.au';;
 
       $rootScope.sendMail                = function (to,subject,body){
         var emailCount =1;
        
           $http.post('/api/emails/', {
             to:to,
-            from:"Asset Register",
+            from:fromEmail,
             subject:subject,
             text:body,
             emailCount:emailCount,
             created_at:new Date()
           }).success(function(email){
-              console.log(email);
+              console.log("email recived from dbs :: ", email);
               setTimeout(function(){
                 $http.post('/api/sendemail/',{
                   to:email.to,
@@ -121,6 +122,7 @@ angular.module('finapp')
             }); 
        };
       $rootScope.send_notification_email = function (type,logic,notification) {
+        console.log("Data recieved from notification is ", notification);
         var   subject = "Notification Subject",
               body    = "Email Notification Body",
               email   = "itsufbe-softwarelicence@mq.edu.au";
@@ -138,7 +140,7 @@ angular.module('finapp')
                "--------------------------------------------------------------------------------"+"\n"+
                 "Asset Register Team" + "\n"+
                "*******************************************************************************************";
-              email = 'rumman.ahmed@mq.edu.au';
+              email = $rootScope.approver;
            } else if (type === 'edit'){
                subject = "Change Request Number::: " + notification.change_no + ", Authorized By : " + $filter('capitalize')(notification.edited_by);
                body = "*******************************************************************************************"+"\n"+
@@ -154,15 +156,20 @@ angular.module('finapp')
                "Asset Register Team" + "\n"+
                "*******************************************************************************************";
                email = notification.created_by_email;
-           }
-         
-        }else{
-
+           }  
+         }else{
          };
 
         //send email for approval
         $rootScope.sendMail(email,subject,body); 
-
+        // setTimeout(function(){
+        //   $http.post('/api/sendemail/',{
+        //     to:email,
+        //     from:fromEmail,
+        //     subject:subject,
+        //     text:body
+        //    })
+        //  },200)
 
        };
       $rootScope.hasLicExpired           = function (expDate,subject,body) {

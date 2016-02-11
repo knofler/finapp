@@ -62,21 +62,54 @@ angular.module('finapp')
    // $scope.getLastID($scope.addmodalinfo.modal); 
 
    $scope.add    = function () {
+
+   	 //get Post Data content to be used for email notification
+     var notification = '';
+   	
+   		// ########## AUTO GENERATE ###############
+	   	//used for auto-generate fileds
 	   	$scope.addmodalinfo.fields.forEach(function(eachfield){
 			// console.log("auto generate code is: ",eachfield.auto_generate);
+			//check if auto generate is enabled
 			if(eachfield.auto_generate == 'true'){
 				console.log("eachfield.name is :: ", eachfield.name);
 				console.log("newAutoField is :: ", $scope.newAutoField);
+				//check if auto pattern is available, if not auto default to '0'
 				if($scope.newAutoField ==''){
 				  $scope.formData[eachfield.name] = 0
 				}else{
-				  $scope.formData[eachfield.name] = $scope.newAutoField;
-				}
-				
-				console.log("$scope.formData is ", $scope.formData[eachfield.name]);
-			}
-	   		});
+				  //before using initial lastID gathered from past call, on form submit making sure no one has used that id	
+				  $http.get($scope.addmodalinfo.config.url+'last/').success(function(getLastEntry){
+				  	// console.log("change_no is :: ",getLastEntry[eachfield.name] )
+				  	//check if this is the first entry or not
+				  	if(getLastEntry[eachfield.name] == undefined){
+				  	  $scope.formData[eachfield.name] = $scope.newAutoField
+				  	  // console.log("inside newAutoField is :: ", $scope.newAutoField);
+				  	  // console.log("inside $scope.formData is ", $scope.formData[eachfield.name]);
+				  	}else{
+				  		// console.log("function recieved data : model-> ",model, 'autofield -> ', autofield , ' pattern -> ', pattern  );
+			            var lastEntry = getLastEntry[eachfield.name];
+			            console.log("lastEntry is :: ", lastEntry);
+			            //remove numaric data from mixed string
+			            if(lastEntry !== undefined){
+			              var numbersData = lastEntry.replace(/\D/g,'');
+			              //increament number
+			              numbersData++;  
+			              $scope.newAutoField = eachfield.auto_pattern+numbersData;
+			              $scope.formData[eachfield.name] = $scope.newAutoField;
+			            }else{
+			              $scope.newAutoField = eachfield.auto_pattern+1;
+			              $scope.formData[eachfield.name] = $scope.newAutoField;
+			             }
+				  	}
+		            
+				  });//end of $http success
+				}//end of newAutoField from Modal launcgh from pageCtrlSrv function
+				// console.log("$scope.formData is ", $scope.formData[eachfield.name]);
+			 }//check if auto generate is enabled if-else 
+	   	 });
 
+	   	//default fileds for add forms
    		$scope.formData['created_at'] 		= new Date();
         $scope.formData['created_by'] 		= $scope.getCurrentUser().name; 
         $scope.formData['created_by_id'] 	= $scope.getCurrentUser()._id;
@@ -84,48 +117,55 @@ angular.module('finapp')
         $scope.formData['latitude']   		= $scope.getLatitude;
         $scope.formData['longitude']  		= $scope.getLongitude;
 
-
+       
+        
+        // ########## POST TO DB ###############
         //Add data to database
-        $http.post(url,$scope.formData).success(function(senddata){
-
-        	//check if email notification is required for add form
-        	if($scope.addmodalinfo.config.emails == 'true'){
-			    $scope.send_notification_email('add',$scope.addmodalinfo.config.model,senddata);
-        	 };
-        	
-        	// ########## SOCKETS ###############
-        	//this is default socket as any form data added
-        	socket.socket.emit("data_added",{
-        		model:$scope.addmodalinfo.config.model,
-        		update:senddata
-        		});
-        	//this is specific socket data tab specific.
-        	if($scope.addmodalinfo.config.sockets !== undefined){
-				socket.socket.emit($scope.addmodalinfo.config.sockets+'_added',{
-        			model:$scope.addmodalinfo.config.model,
-	        		update:senddata
-				 });
-        	 }
-        	
+        setTimeout(function(){
+ 		  $http.post(url,$scope.formData).success(function(senddata){
+ 		  	notification = senddata;	
         	});
+         },200);
+		
+		// ########## SOCKETS ###############       
+        //this is specific socket data tab specific.
+        if($scope.addmodalinfo.config.sockets !== undefined){
+			setTimeout(function(){
+				//this is default socket as any form data added
+		        	socket.socket.emit("data_added",{
+		        		model:$scope.addmodalinfo.config.model,
+		        		update:notification
+		        	 });
 
-        // console.log("Purchase record of  : " + $scope.formData.faculty_ref + " created at " + new Date() + " by " + $scope.getCurrentUser().name);
-         
-        // **************Notification*********************
+					socket.socket.emit($scope.addmodalinfo.config.sockets+'_added',{
+	        			model:$scope.addmodalinfo.config.model,
+		        		update:notification
+					 });
+	         },600);
+         }
+
+		// ########## EMAILS ###############   
+		//check if email notification is required for add form
+    	if($scope.addmodalinfo.config.emails == 'true'){
+		    setTimeout(function(){
+		    	$scope.send_notification_email('add',$scope.addmodalinfo.config.model,notification);
+    	 	},500);
+    	 };
+		   
+        // ########## PAGE NOTIFICATION ###############
         var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' added new record ' + $scope.formData[$scope.addmodalinfo.fields[0].title] ;
         // console.log(data);  
-
         // Send notification broadcast to all connected users
         pageCtrlSrv.send_notification(data);
-
-
+        
+        // ########## COOKIES ###############
         //add information to cookies
         if(Object.keys($cookies).length >0 ){
           // $cookies.purchase = true;
           console.log($cookies);
          }
 
-		  $modalInstance.close();
+		$modalInstance.close();
 	 };
    $scope.ok     = function () {
 	    $modalInstance.close();
@@ -140,7 +180,7 @@ angular.module('finapp')
 	$scope.EditformData    = {}; 
 	$scope.getCurrentUser  = Auth.getCurrentUser;
 	$scope.userInfo        = [];
-
+	
 	var url = $scope.editmodalinfo.config.url+$scope.editmodalinfo.id;
 	console.log("edit url is :: ", url);
 	console.log("edit model is :: ", $scope.editmodalinfo.config.model);
@@ -157,54 +197,61 @@ angular.module('finapp')
 
 	$scope.edit    = function (itemID){
 
-	 //update tables with form data
-	  $scope.EditformData['edited_at']       = new Date();
-      $scope.EditformData['edited_by']       = $scope.getCurrentUser().name;
-      $scope.EditformData['edited_by_id']    = $scope.getCurrentUser()._id;
-      $scope.EditformData['edited_by_email'] = $scope.getCurrentUser().email;
-      $scope.EditformData['latitude']  	     = $scope.getLatitude;
-      $scope.EditformData['longitude']       = $scope.getLongitude;
-	  
-	  $http.put(url,$scope.EditformData).success(function(senddata){
-	   
-	    	//check if email notification is required for add form
-	        if($scope.editmodalinfo.config.emails == 'true'){
-				    $scope.send_notification_email('edit',$scope.editmodalinfo.config.model,senddata);
-	        	 };
-
-			// ########## SOCKETS ###############
-	    	//this is default socket as any form data added
-	    	socket.socket.emit("data_updated",{
-	    		model:$scope.editmodalinfo.config.model,
-	    		update:senddata
-	    		});
-	        //this is specific socket data tab specific.
-	    	if($scope.editmodalinfo.config.sockets !== undefined){
+		//get Post Data content to be used for email notification
+    	var notification = '';
+		
+		//update tables with form data
+		$scope.EditformData['edited_at']       = new Date();
+	    $scope.EditformData['edited_by']       = $scope.getCurrentUser().name;
+	    $scope.EditformData['edited_by_id']    = $scope.getCurrentUser()._id;
+	    $scope.EditformData['edited_by_email'] = $scope.getCurrentUser().email;
+	    $scope.EditformData['latitude']  	   = $scope.getLatitude;
+	    $scope.EditformData['longitude']       = $scope.getLongitude;
+  
+     	$http.put(url,$scope.EditformData).success(function(senddata){
+			notification = senddata;	
+ 	   		});
+		
+		// ########## SOCKETS ###############
+    	//this is specific socket data tab specific.
+    	if($scope.editmodalinfo.config.sockets !== undefined){
+	    	setTimeout(function(){
+		    	socket.socket.emit("data_updated",{
+		    		model:$scope.editmodalinfo.config.model,
+		    		update:notification
+		    	 });
 				socket.socket.emit($scope.editmodalinfo.config.sockets+'_updated',{
 	    			model:$scope.editmodalinfo.config.model,
-	        		update:senddata
+	        		update:notification
 				 });
-	    	 }	
+			},600);	
+    	 }
 
-	        });
-	    
-	     // console.log("Purchase record  : " + $scope.EditData[$scope.EditData.length-1].faculty_ref + " edited at " + new Date() + " by " + $scope.getCurrentUser().name);
-	   
-	     // **************Notification*********************
-	     var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' edited record ' + $scope.editmodalinfo.id ;
-	     // console.log(data);  
+     	// ########## EMAILS ###############   
+		//check if email notification is required for add form
+    	if($scope.editmodalinfo.config.emails == 'true'){
+		    setTimeout(function(){
+		    	$scope.send_notification_email('edit',$scope.editmodalinfo.config.model,notification);
+    	 	},500);
+    	 };
+  
 
-	     // Send notification broadcast to all connected users
-	     pageCtrlSrv.send_notification(data);
+	    // ########## PAGE NOTIFICATION ###############
+	    var data = '<strong>'+$scope.getCurrentUser().name+'</strong>' + ' edited record ' + $scope.editmodalinfo.id ;
+	    // console.log(data);  
+
+	    // Send notification broadcast to all connected users
+	    pageCtrlSrv.send_notification(data);
 	   
-		    $modalInstance.close();
-	 }; 
+		$modalInstance.close();
+
+	    }; 
 	$scope.ok      = function () {
-		    $modalInstance.close();
-		  };
+	    $modalInstance.close();
+	  };
 	$scope.cancel  = function () {
-		    $modalInstance.dismiss('cancel');
-		   };
+	    $modalInstance.dismiss('cancel');
+	   };
   	})
 .controller('ModalDeleteInstanceCtrl',function ($scope,$http,pageCtrlSrv,socket,$modalInstance,Auth) {
   
@@ -460,7 +507,5 @@ angular.module('finapp')
        }//end of loan
     };//end of return
   });//end of directive	
-
-
 
 

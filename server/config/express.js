@@ -334,8 +334,10 @@ module.exports = function(app) {
       }, function(error, response){
          if(error){
              console.log(error);
+             res.send(500);
          }else{
              console.log("Message sent: " + response.message);
+             res.send(200);
          }
       });
    });
