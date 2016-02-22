@@ -1,0 +1,41 @@
+<!-- ############# Custom API with ui-select to find from Australian location ############ --> 
+
+<!-- <p>Selected: {{auaddress.selected.suburb}}</p>
+<div class="input-group col-lg-4 col-md-14 col-sm-4 col-xs-4">
+ <ui-select ng-model="auaddress.selected"
+             theme="bootstrap"
+             ng-disabled="disabled"
+             reset-search-input="false"
+             style="width: 300px;">
+    <ui-select-match placeholder="Enter an address...">{{$select.selected.suburb}}</ui-select-match>
+    <ui-select-choices repeat="address in auaddresses track by $index"
+             refresh="refreshAUAddresses($select.search)"
+             refresh-delay="0">
+      <div ng-bind-html="address.suburb | highlight: $select.search"></div>
+    </ui-select-choices>
+  </ui-select>
+</div> -->
+
+<!-- ############# Google MAP Api to pick address using ui-select ############# -->
+
+  <!-- <p>Selected: {{address.selected.formatted_address}}</p> -->
+  <ui-select ng-model="address.selected"
+             theme="bootstrap"
+             ng-disabled="disabled"
+             reset-search-input="false">
+    <ui-select-match placeholder="Enter an address...">{{$select.selected.formatted_address}}</ui-select-match>
+    <ui-select-choices repeat="address in addresses track by $index"
+             refresh="refreshAddresses($select.search)"
+             refresh-delay="0">
+      <div ng-bind-html="address.formatted_address | highlight: $select.search"></div>
+    </ui-select-choices>
+  </ui-select>
+
+<!-- ############# Custom API build to lazy search for Australian location ############ -->
+
+<!--   <div class="input-group col-lg-4 col-md-14 col-sm-4 col-xs-4">
+    <input id="search_suburb" ng-model="suburb" type="search" placeholder="Enter a suburb name .."/><br />
+    <select ui-select2="select2Options" id="e8" class="cust_selec2_select" ng-model="suburb" type='text'>
+      <option ng-repeat="loc in apilocations track by $index">{{loc.suburb}}</option>
+    </select>
+  </div>

@@ -53,6 +53,7 @@ angular.module('finapp')
         // emails     :'true' //enable this to send email notification on data added and updated  
         subheader :'Accounting for everyday expenses',        
         url       :'/api/accountings/',
+        locations :'true',
         sockets   :'accounting',
         model     :'accounting',
         modal     :'accountings'

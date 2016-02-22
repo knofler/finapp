@@ -109,6 +109,11 @@ angular.module('finapp')
 			 }//check if auto generate is enabled if-else 
 	   	 });
 
+	   	console.log("scope.address" , $scope.address);
+      	if(Object.keys($scope.address).length !== 0){
+        	console.log("scope.address.selected is :: ", $scope.address.selected.formatted_address);
+        	$scope.formData['location'] = $scope.address.selected.formatted_address;
+      	 }
 	   	//default fileds for add forms
    		$scope.formData['created_at'] 		= new Date();
         $scope.formData['created_by'] 		= $scope.getCurrentUser().name; 

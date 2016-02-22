@@ -7,6 +7,7 @@ angular
   'ui.router',
   'ui.bootstrap',
   'react',
+  'ui.select',
   'ui.select2',
   'ui.sortable',
   'angularFileUpload',

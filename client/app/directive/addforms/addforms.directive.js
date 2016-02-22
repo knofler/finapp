@@ -92,6 +92,11 @@ angular.module('finapp')
             alert("No Data");
             return;
             }else{
+              console.log("scope.address" , scope.address);
+              if(Object.keys(scope.address).length !== 0){
+                console.log("scope.address.selected is :: ", scope.address.selected.formatted_address);
+                scope.formdata['location'] = scope.address.selected.formatted_address;
+              }
               scope.formdata['created_at'] = new Date();
               scope.formdata['created_by'] = scope.getCurrentUser().name;   
               scope.formdata['latitude']   = scope.getLatitude;

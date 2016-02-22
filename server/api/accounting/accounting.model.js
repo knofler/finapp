@@ -14,6 +14,7 @@ var AccountingSchema = new Schema({
   edited_by_id:String,
   longitude:String,
   latitude:String,
+  location:String,
   Product:String,
   Cost:Number,
   Home:Number,
